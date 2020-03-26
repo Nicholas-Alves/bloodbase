@@ -10,20 +10,22 @@ server.use(express.urlencoded({
     extended: true
 }));
 
-//CONFIGURAÇÃO DO 
+//CONFIGURAÇÃO DO BANCO DE DADOS (POSTGRES)
 const db = new Pool({
     user: 'postgres',
-    password: 'sql',
+    password: '',
     host: 'localhost',
     port: 5432,
     database: 'dbBloodBase'
 });
 
-
+//CONFIGURAÇÃO DO NUNJUCKS
 nunjucks.configure('./', {
     express: server,
     noCache: true
 });
+
+//ROTAS
 server.get('/', (req, res) => {
     db.query('select * from "tbDonor"', (err, result) => {
         if(err){
@@ -53,6 +55,5 @@ server.post('/', (req, res) => {
     });
 })
 
-
-
+//INICIANDO O SERVIDOR
 server.listen(3000, () => console.log('Servidor iniciado'));
